@@ -1,61 +1,38 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
-
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
+    <div className="min-h-screen bg-cream flex items-center justify-center p-4">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center">
+        <h1 className="font-monte-carlo text-[80px] leading-none text-burgundy mb-8 text-center">
+          Photobooth
         </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
+        
+        <div className="mb-12 w-full max-w-[343px]">
+          <img
+            src="https://api.builder.io/api/v1/image/assets/TEMP/6c56b121cd6e1670168617e5436cdb091ddd2075?width=686"
+            alt="Vintage Photobooth"
+            className="w-full h-auto"
+          />
+        </div>
+
+        <div className="flex flex-col gap-4 w-full max-w-[202px]">
+          <button
+            onClick={() => navigate("/camera")}
+            className="w-full h-[53px] rounded-[10px] bg-burgundy text-cream font-playfair text-[22px] shadow-md hover:opacity-90 transition-opacity"
+          >
+            Use Camera
+          </button>
+          
+          <button
+            onClick={() => navigate("/upload")}
+            className="w-full h-[53px] rounded-[10px] bg-burgundy text-cream font-playfair text-[22px] shadow-md hover:opacity-90 transition-opacity"
+          >
+            Upload Photos
+          </button>
+        </div>
       </div>
     </div>
   );
