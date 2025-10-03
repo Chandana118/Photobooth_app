@@ -13,7 +13,14 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'monte-carlo': ['MonteCarlo', 'cursive'],
+        'playfair': ['Playfair Display', 'serif'],
+      },
       colors: {
+        cream: "#FDF6EC",
+        burgundy: "#800020",
+        photogray: "#818181",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -56,6 +63,20 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        photostrip: {
+          vanilla: "#FFF8F0",
+          pink: "#F7D6D0",
+          blue: "#D6E7FF",
+          purple: "#DEC1FF",
+          black: "#000000",
+        },
+        photobackground: {
+          beige: "#EFE8E0",
+          tan: "#E0C0BB",
+          gray: "#DADADE",
+          lavender: "#CEC6D6",
+          white: "#FFFFFF",
         },
       },
       borderRadius: {
