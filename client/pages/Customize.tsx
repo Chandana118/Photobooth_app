@@ -62,7 +62,7 @@ export default function Customize() {
                   style={{ backgroundColor: item.color }}
                 >
                   {selectedPhotostrip === item.name && (
-                    <Check className="absolute inset-0 m-auto w-6 h-6" style={{ color: item.color === "#000000" ? "white" : "black" }} />
+                    <Check className="absolute inset-0 m-auto w-5 h-5" style={{ color: item.color === "#000000" ? "white" : "black" }} />
                   )}
                 </button>
               ))}
@@ -82,7 +82,7 @@ export default function Customize() {
                   style={{ backgroundColor: item.color }}
                 >
                   {selectedBackground === item.name && (
-                    <Check className="absolute inset-0 m-auto w-6 h-6 text-black" />
+                    <Check className="absolute inset-0 m-auto w-5 h-5 text-black" />
                   )}
                 </button>
               ))}
@@ -94,12 +94,16 @@ export default function Customize() {
               Date stamp
             </h3>
             <button
+              type="button"
               onClick={() => setShowDateStamp(!showDateStamp)}
-              className={`flex items-center justify-center w-[86px] h-[34px] rounded-[30px] bg-burgundy shadow-md transition-all ${
-                showDateStamp ? "" : "flex-row-reverse"
+              className={`flex items-center px-2 w-[86px] h-[34px] rounded-[30px] transition-all duration-200 ${
+                showDateStamp
+                  ? "bg-burgundy justify-end shadow-md"
+                  : "bg-cream border border-burgundy justify-start"
               }`}
+              aria-pressed={showDateStamp}
             >
-              <div className="w-8 h-7 rounded-full bg-cream" />
+              <div className="w-7 h-7 rounded-full bg-cream shadow-md transition-transform" />
             </button>
           </div>
         </div>
