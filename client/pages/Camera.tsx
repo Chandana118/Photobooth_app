@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DEFAULT_COUNTDOWN = 3;
+const TOTAL_PHOTOS = 3;
 
 const applyVintageGrayscale = (
   ctx: CanvasRenderingContext2D,
@@ -35,7 +36,6 @@ export default function Camera() {
   const streamRef = useRef<MediaStream | null>(null);
   const prepareTimeoutRef = useRef<number | null>(null);
   const countdownTimerRef = useRef<number | null>(null);
-  const countdownDurationRef = useRef(DEFAULT_COUNTDOWN);
 
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
@@ -79,7 +79,7 @@ export default function Camera() {
 
   useEffect(() => {
     if (!stream) return;
-    if (capturedPhotos.length >= 3) return;
+    if (capturedPhotos.length >= TOTAL_PHOTOS) return;
     if (countdown !== null) return;
 
     if (prepareTimeoutRef.current) {
@@ -90,7 +90,7 @@ export default function Camera() {
 
     prepareTimeoutRef.current = window.setTimeout(() => {
       setIsCapturing(true);
-      setCountdown(countdownDurationRef.current);
+      setCountdown(DEFAULT_COUNTDOWN);
       prepareTimeoutRef.current = null;
     }, delay);
 
@@ -144,8 +144,8 @@ export default function Camera() {
     setCountdown(null);
     setIsCapturing(false);
 
-    if (newPhotos.length < 3) {
-      setCurrentPhoto(Math.min(3, newPhotos.length + 1));
+    if (newPhotos.length < TOTAL_PHOTOS) {
+      setCurrentPhoto(Math.min(TOTAL_PHOTOS, newPhotos.length + 1));
     } else {
       const activeStream = streamRef.current;
       if (activeStream) {
@@ -160,30 +160,11 @@ export default function Camera() {
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <div className="w-full max-w-md mx-auto flex flex-col items-center">
-        <h2 className="font-monte-carlo text-[80px] leading-none text-burgundy mb-6 text-center">
+        <h2 className="font-monte-carlo text-[80px] leading-none text-burgundy mb-4 text-center">
           {getPhotoTitle(currentPhoto)}
         </h2>
 
-        <div className="flex items-center gap-4 mb-6">
-          <span className="font-playfair text-[22px] text-burgundy">Timer</span>
-          <div className="flex gap-3">
-            {countdownChoices.map(choice => (
-              <button
-                key={choice}
-                type="button"
-                onClick={() => setCountdownDuration(choice)}
-                className={`w-[62px] h-[36px] rounded-full border border-burgundy font-playfair text-[18px] transition-all ${
-                  countdownDuration === choice
-                    ? "bg-burgundy text-cream shadow-md"
-                    : "bg-cream text-burgundy"
-                }`}
-                aria-pressed={countdownDuration === choice}
-              >
-                {choice}s
-              </button>
-            ))}
-          </div>
-        </div>
+        <p className="font-playfair text-[18px] text-burgundy mb-6">Timer: 3 seconds</p>
 
         <div className="relative w-full max-w-[392px] aspect-[392/574] bg-photogray mb-8 overflow-hidden rounded-lg">
           <video
@@ -196,11 +177,11 @@ export default function Camera() {
           <canvas ref={canvasRef} className="hidden" />
 
           {isCapturing && countdown !== null && countdown >= 0 && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/35">
-              <span className="font-playfair text-[32px] text-cream tracking-wide">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/35">
+              <span className="font-playfair text-[28px] text-cream tracking-wide">
                 Hold still!
               </span>
-              <span className="font-playfair text-[120px] text-cream font-bold">
+              <span className="font-playfair text-[96px] text-cream font-bold">
                 {countdown === 0 ? "📸" : countdown}
               </span>
             </div>
@@ -208,15 +189,15 @@ export default function Camera() {
         </div>
 
         <p className="font-playfair text-[24px] text-burgundy text-center mb-2">
-          Capturing photo {capturedPhotos.length + 1} of 3
+          Capturing photo {capturedPhotos.length + 1} of {TOTAL_PHOTOS}
         </p>
         <p className="font-playfair text-[18px] text-burgundy/80 text-center">
-          The shutter will trigger automatically after the timer.
+          The shutter triggers automatically after the countdown.
         </p>
 
         {capturedPhotos.length > 0 && (
           <div className="mt-6 text-burgundy font-playfair text-sm">
-            Photos captured: {capturedPhotos.length}/3
+            Photos captured: {capturedPhotos.length}/{TOTAL_PHOTOS}
           </div>
         )}
       </div>
