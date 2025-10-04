@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const countdownChoices = [3, 5];
+const DEFAULT_COUNTDOWN = 3;
 
 const applyVintageGrayscale = (
   ctx: CanvasRenderingContext2D,
