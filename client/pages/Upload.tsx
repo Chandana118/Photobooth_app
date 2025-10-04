@@ -2,6 +2,46 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ImagePlus } from "lucide-react";
 
+const applyVintageGrayscale = (
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+) => {
+  const imageData = ctx.getImageData(0, 0, width, height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    const toned = Math.min(255, gray * 1.05);
+    data[i] = Math.min(255, toned + 8);
+    data[i + 1] = Math.min(255, toned + 4);
+    data[i + 2] = Math.min(255, toned);
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+};
+
+const convertToVintage = (imageSrc: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        reject(new Error("Unable to process image"));
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      applyVintageGrayscale(ctx, canvas.width, canvas.height);
+      resolve(canvas.toDataURL("image/jpeg"));
+    };
+    img.onerror = () => reject(new Error("Unable to load image"));
+    img.src = imageSrc;
+  });
+};
+
 export default function Upload() {
   const navigate = useNavigate();
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
@@ -11,10 +51,16 @@ export default function Upload() {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      const newPhotos = [...uploadedPhotos];
-      newPhotos[index] = reader.result as string;
-      setUploadedPhotos(newPhotos);
+    reader.onloadend = async () => {
+      try {
+        const vintagePhoto = await convertToVintage(reader.result as string);
+        const newPhotos = [...uploadedPhotos];
+        newPhotos[index] = vintagePhoto;
+        setUploadedPhotos(newPhotos);
+      } catch (error) {
+        console.error(error);
+        alert("We couldn't process that image. Please try a different file.");
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -55,7 +101,7 @@ export default function Upload() {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <ImagePlus className="w-8 h-8 text-cream" />
+                  <ImagePlus className="w-6 h-6 text-cream" />
                 </div>
               )}
             </label>
