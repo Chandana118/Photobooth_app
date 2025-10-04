@@ -1,6 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+const applyVintageToRegion = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) => {
+  const imageData = ctx.getImageData(x, y, width, height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    const toned = Math.min(255, gray * 1.05);
+    data[i] = Math.min(255, toned + 8);
+    data[i + 1] = Math.min(255, toned + 4);
+    data[i + 2] = Math.min(255, toned);
+  }
+
+  ctx.putImageData(imageData, x, y);
+};
+
 export default function Preview() {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState<string[]>([]);
@@ -66,13 +87,14 @@ export default function Preview() {
     const photoHeight = 250;
     const photoX = stripX + 15;
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < photos.length; i++) {
       const img = new Image();
       img.src = photos[i];
       await new Promise((resolve) => {
         img.onload = () => {
           const photoY = stripY + 15 + i * (photoHeight + 15);
           ctx.drawImage(img, photoX, photoY, photoWidth, photoHeight);
+          applyVintageToRegion(ctx, photoX, photoY, photoWidth, photoHeight);
           resolve(null);
         };
       });
@@ -123,7 +145,11 @@ export default function Preview() {
                 className="absolute left-[11px] w-[271px] h-[202px] border border-black overflow-hidden"
                 style={{ top: `${9 + index * 217}px` }}
               >
-                <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                <img
+                  src={photo}
+                  alt={`Photo ${index + 1}`}
+                  className="w-full h-full object-cover filter grayscale contrast-[1.15] brightness-[1.05]"
+                />
               </div>
             ))}
 
