@@ -78,10 +78,6 @@ export default function Camera() {
   }, []);
 
   useEffect(() => {
-    countdownDurationRef.current = countdownDuration;
-  }, [countdownDuration]);
-
-  useEffect(() => {
     if (!stream) return;
     if (capturedPhotos.length >= 3) return;
     if (countdown !== null) return;
