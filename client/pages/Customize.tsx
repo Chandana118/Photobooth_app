@@ -96,14 +96,16 @@ export default function Customize() {
             <button
               type="button"
               onClick={() => setShowDateStamp(!showDateStamp)}
-              className={`flex items-center px-2 w-[86px] h-[34px] rounded-[30px] transition-all duration-200 ${
-                showDateStamp
-                  ? "bg-burgundy justify-end shadow-md"
-                  : "bg-cream border border-burgundy justify-start"
+              className={`flex items-center px-2 w-[86px] h-[34px] rounded-[30px] bg-burgundy transition-all duration-200 ${
+                showDateStamp ? "justify-end" : "justify-start opacity-70"
               }`}
               aria-pressed={showDateStamp}
             >
-              <div className="w-7 h-7 rounded-full bg-cream shadow-md transition-transform" />
+              <div
+                className={`w-7 h-7 rounded-full bg-cream shadow-md transition-transform ${
+                  showDateStamp ? "translate-x-0" : "-translate-x-2"
+                }`}
+              />
             </button>
           </div>
         </div>
