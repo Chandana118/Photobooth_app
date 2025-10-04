@@ -35,10 +35,9 @@ export default function Camera() {
   const streamRef = useRef<MediaStream | null>(null);
   const prepareTimeoutRef = useRef<number | null>(null);
   const countdownTimerRef = useRef<number | null>(null);
-  const countdownDurationRef = useRef(3);
+  const countdownDurationRef = useRef(DEFAULT_COUNTDOWN);
 
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [countdownDuration, setCountdownDuration] = useState(3);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [currentPhoto, setCurrentPhoto] = useState(1);
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
