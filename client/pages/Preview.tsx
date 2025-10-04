@@ -109,7 +109,7 @@ export default function Preview() {
         day: "numeric",
         year: "numeric",
       });
-      ctx.fillText(date, width / 2, height - 100);
+      ctx.fillText(date, width / 2, height - 55);
     }
 
     const link = document.createElement("a");
@@ -154,7 +154,7 @@ export default function Preview() {
             ))}
 
             {showDateStamp && (
-              <p className="absolute bottom-12 left-0 right-0 text-center font-monte-carlo text-[25px] text-burgundy">
+              <p className="absolute bottom-4 left-0 right-0 text-center font-monte-carlo text-[23px] text-burgundy">
                 {currentDate}
               </p>
             )}
