@@ -50,7 +50,7 @@ Package Manager: pnpm
 
 📦 Installation & Setup
 1️⃣ Clone the repository
-git clone https://github.com/your-username/photobooth-spark-nest.git
+git clone https://github.com/Chandana118/photobooth-spark-nest.git
 cd photobooth-spark-nest
 
 2️⃣ Install dependencies
